@@ -19,6 +19,8 @@ services:
             -                    ./db/data:/var/lib/mysql
         networks:
             -                    app-fullstack-net
+        ports:  
+            -                   "3306:3306"   
 
     mysql-admin:
         image:                   phpmyadmin/phpmyadmin
