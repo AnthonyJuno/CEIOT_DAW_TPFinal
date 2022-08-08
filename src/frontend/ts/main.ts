@@ -26,17 +26,13 @@ class Main implements EventListenerObject, ResponseLister {
             
             let datosVisuale:string = `<ul class="collection">`
             for (let disp of respuesta) {
-                let lista: string = "";
+                let avatar_collection: string = "";
+                let edit_collection: string = "";
                 let checked = ((JSON.stringify(disp.state) == "1")? 'checked = "checked"' : "")  //Read state value and set accordingly the checkbox state.
-                datosVisuale += `<details>`;
-                
-                lista += ` <li href="#!" class="collection-item avatar">`;
-                lista += `<img src="../static/images/${disp.type}.png" alt="" class="circle">`;
-               // datosVisuale += `<a class="btn-floating btn-small waves-effect waves-light red"><i class="material-icons">delete_forever</i></a>`
-                lista += `<span class="title nombreDisp">${disp.name}</span>
-                <p>${disp.description}
-                </p>
-
+                //construyo la lista de dispositivos para meter en summary de HTML5
+                avatar_collection += ` <li href="#!" class="collection-item avatar">`;
+                avatar_collection += `<img src="../static/images/${disp.type}.png" alt="" class="circle">`;
+                avatar_collection += `<span class="title nombreDisp">${disp.name}</span>
                 <a href="#!" class="secondary-content">
                 <div class="switch">
                    <label>
@@ -47,14 +43,19 @@ class Main implements EventListenerObject, ResponseLister {
                     </label>
                 </div>
                 </a>
-                
               </li>`;
-                datosVisuale += `<summary>${lista} </summary>`;
-                datosVisuale += ` <button id="btn_${disp.id}" class="btn waves-effect waves-light button-view red"><i class="material-icons left">delete_forever</i>Remove Device</button> `
-     
-              //  datosVisuale += `  <a <input type= button class="btn-floating btn-small waves-effect waves-light red"><i class="material-icons">delete_forever</i>Remove Device></a> `
-              //  datosVisuale += ` <a <button>  class="waves-effect waves-light btn button-view red" id="btn_${disp.id}" ><i class="material-icons left">delete_forever</i>Remove Device</a>`
-       //         <button id="btn_${disp.id}" class="btn waves-effect waves-light button-view red"><i class="material-icons left">delete_forever</i>Remove Device</button>
+              // HTML 5 details to hide/expand with details.
+              edit_collection += `    <ul class="collection">
+                                      <li class="collection-item"><label for ="fname_${disp.id}"> Device Name: </label> <input type="text" id="fname_${disp.id}" name="fname_${disp.id}" value="${disp.name}"></li>
+                                      <li class="collection-item"><label for ="fdescription_${disp.id}"> Description: </label> <input type="text" id="fdescription_${disp.id}" name="fdescription_${disp.id}" value="${disp.description}"></li>
+                                      <li class="collection-item"><label for ="ftype_${disp.id}"> Type: </label> <input type="text" id="ftype_${disp.id}" name="ftype_${disp.id}" value=${disp.type}></li>
+                                      </ul>`
+              datosVisuale += `<details>`;
+              datosVisuale += `<summary>${avatar_collection} </summary>`;
+              datosVisuale += edit_collection;
+              datosVisuale += ` <button id="btn_update_${disp.id}" class="btn waves-effect waves-light button-view green"><i class="material-icons left">sync</i>Update Device</button> `;
+              datosVisuale += ` <button id="btn_delete_${disp.id}" class="btn waves-effect waves-light button-view red"><i class="material-icons left">delete_forever</i>Remove Device</button> `;
+
 
               datosVisuale += `</details>`;
             }
@@ -66,8 +67,17 @@ class Main implements EventListenerObject, ResponseLister {
 
                 let checkbox = document.getElementById("cb_" + disp.id);
                 checkbox.addEventListener("click",this)
-                let btn = document.getElementById("btn_" + disp.id);
-                btn.addEventListener("click",this)
+                let btn_delete = document.getElementById("btn_delete_" + disp.id);
+                btn_delete.addEventListener("click",this)
+                let btn_update = document.getElementById("btn_update_" + disp.id);
+                btn_update.addEventListener("click",this)
+              
+                // let fname = document.getElementById("fname_" + disp.id);
+                // fname.value = ${disp.name};
+                // let fdescription = document.getElementById("fdescription_" + disp.id);
+                // fdescription.value = ${disp.name};
+                // let ftype = document.getElementById("ftype_" + disp.id);
+                // ftype.value = ${disp.name};
             }
         
 
@@ -104,16 +114,37 @@ class Main implements EventListenerObject, ResponseLister {
             let datos = { "id": objetoEvento.id.substring(3), "state": objetoEvento.checked };
             this.framework.ejecutarRequest("POST","http://localhost:8000/updateState/", this,datos)
             
-        } else if (e.type == "click" && objetoEvento.id.startsWith("btn_")) {
+        } else if (e.type == "click" && objetoEvento.id.startsWith("btn_delete_")) {
 
             //  console.log(objetoEvento.id,)
               console.log("Se hizo click para borrar el device")
-              let datos = { "id": objetoEvento.id.substring(4)};
+              let datos = { "id": objetoEvento.id.substring(11)};
               this.framework.ejecutarRequest("POST","http://localhost:8000/deleteDevice/", this,datos)
+              
+        } else if (e.type == "click" && objetoEvento.id.startsWith("btn_update")) {
+              console.log("Se hizo click para actualizar el device "+ objetoEvento.id.substring(11))
+            // Load all values from document before building update json paramenter (due to TS cast)
+              let id = objetoEvento.id.substring(11);
+              let fname = (document.getElementById("fname_" + id) as HTMLInputElement).value;
+              let fdescription = (document.getElementById("fdescription_" + id) as HTMLInputElement).value;
+              let datos = { "id": id, "name": fname, "description": fdescription};
+              console.log(datos)
+              this.framework.ejecutarRequest("POST","http://localhost:8000/updateDevice/", this,datos)
               
         }else if (e.type == "click" && objetoEvento.id == "btnAddDevice") {       
             console.log("Se hizo click para agregar un device")    
-            alert("Hola - Quiero Agregar un device ");    
+            let fname = (document.getElementById("fnewdevname") as HTMLInputElement).value;
+            let fdescription = (document.getElementById("fnewdevdesc") as HTMLInputElement).value;
+            let ftype = (document.getElementById("fnewdevtype") as HTMLInputElement).value;
+            let fstat = 0;
+            let datos = { "name": fname, "description": fdescription, "state" : fstat, "type":ftype};
+            console.log(datos)
+            
+            
+            
+           // alert("quiero agregar un nuevo device con los datos" + JSON.stringify(datos) );
+            this.framework.ejecutarRequest("POST","http://localhost:8000/insertrow/", this,datos)
+            
         } else {
                 alert("Se hizo algo distinto")
         }
@@ -125,11 +156,12 @@ window.addEventListener("load", () => {
     var elems = document.querySelectorAll('select');
     var instances = M.FormSelect.init(elems,"");
 
-    let btn = document.getElementById("btnAddDevice");
-    //let btn2 = document.getElementById("btnDoble");
+    
     let main: Main = new Main();
-    // main.nombre = "Matias"
-  //  btn2.addEventListener("dblclick", main);
+    
+
+    
+    let btn = document.getElementById("btnAddDevice");
     btn.addEventListener("click", main);
   
 

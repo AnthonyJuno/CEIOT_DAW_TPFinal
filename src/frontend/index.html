@@ -37,17 +37,24 @@
                     <div class="input-field col s12 m12 l12 xl12">
                         <textarea id="textarea_1" class="materialize-textarea" style="height: 150px;" readonly></textarea>
                     </div>
-                    <div class="col s4 m4 l2 xl2">
-                        <!-- <div class="input-field col s12">
-                            <select multiple>
-                              <option value="" disabled selected>Choose your option</option>
-                              <option value="1">Option 1</option>
-                              <option value="2">Option 2</option>
-                              <option value="3">Option 3</option>
-                            </select>
-                            <label>Materialize Multiple Select</label>
-                          </div> -->
-                        <button id="btnAddDevice" class="btn waves-effect waves-light button-view red"><i class="material-icons left">add_box</i>New Device</button>
+                   <!--  <div class="col s4 m4 l2 xl2"> -->
+                    <div>
+                        <details>
+                            <summary>Add New Device</summary>
+                            <ul class="collection">
+                                <li class="collection-item" id="ci_new_device_name"><input type="text" id="fnewdevname" name="fname_new_device_name" value="Name"></li>
+                                <li class="collection-item" id="ci_new_device_desc"><input type="text" id="fnewdevdesc" name="fname_new_device_desc" value="Description"></li>
+                                <li class="collection-item" id="ci_new_device_type"> 
+                                    <select multiple  id="fnewdevtype" class="browser-default">
+                                      <option value="0">0 - Lampara</option>
+                                      <option value="1">1 - Perisana</option>
+                                    </select>
+                                    <label>Select Device Type</label>
+                                  </li>
+
+                              </ul>    
+                            <button id="btnAddDevice" class="btn waves-effect waves-light button-view green"><i class="material-icons left">add_box</i>Add Device</button>
+                        </details>
                        
                     </div>
                 </div>
