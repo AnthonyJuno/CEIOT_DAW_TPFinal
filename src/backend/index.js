@@ -66,7 +66,7 @@ app.post("/insertrow",function(req,res){
     console.log("pidieron insertar en la DB");
     setTimeout(function(){
         let data = req.body;
-        let query = 'INSERT INTO devices (name, description, state, type) VALUES ('+ JSON.stringify(data.name) +','+ JSON.stringify(data.description) +','+ data.state +','+ data.type +')' ;  
+        let query = 'INSERT INTO devices (name, description, state, type, dimmable) VALUES ('+ JSON.stringify(data.name) +','+ JSON.stringify(data.description) +','+ data.state +','+ data.type +','+data.dimmable +')' ;  
         utils.query(query,(err, response) => {
             if(err) {
                 console.error(err);
@@ -80,7 +80,7 @@ app.post("/insertrow",function(req,res){
 
 //Cambiar el estado del dispositivo
 app.post("/updateState",function(req,res){
-    console.log("pidieron cambiar el estado del dispositivo en la DB");
+    console.log("pidieron cambiar el estado del dispositivo en la DB a " + req.body.state);
     setTimeout(function(){
         let data = req.body;
         let query = 'UPDATE devices SET state = ' + data.state +' WHERE id = '+ data.id ;  
@@ -110,9 +110,11 @@ app.post("/updateDevice",function(req,res){
         update_fields += (((data.hasOwnProperty("name") || data.hasOwnProperty("type")) && data.hasOwnProperty("description")  )? ', description = "' + data.description + '"' :( data.hasOwnProperty("description"))? 'description = "' + data.description + '"': "");
         // si hubo alguno de los campos anteriores, o si solo hay estado
         update_fields += (((data.hasOwnProperty("name") || data.hasOwnProperty("type") || data.hasOwnProperty("description")) && data.hasOwnProperty("state")  )? ', state = "' + data.state + '"':( data.hasOwnProperty("state"))? 'state = "' + data.state + '"' : "");
-        //update del type
-        update_fields += (((data.hasOwnProperty("name") || data.hasOwnProperty("type") || data.hasOwnProperty("description") || data.hasOwnProperty("state")) && data.hasOwnProperty("type")  )? ', type = "' + data.type + '"':( data.hasOwnProperty("type"))? 'type = "' + data.type + '"' : "");
-
+        // //update del type
+        // update_fields += (((data.hasOwnProperty("name") || data.hasOwnProperty("type") || data.hasOwnProperty("description") || data.hasOwnProperty("state")) && data.hasOwnProperty("type")  )? ', type = "' + data.type + '"':( data.hasOwnProperty("type"))? 'type = "' + data.type + '"' : "");
+        //update del dimmable
+        update_fields += (((data.hasOwnProperty("name") || data.hasOwnProperty("type") || data.hasOwnProperty("description") || data.hasOwnProperty("state")) || data.hasOwnProperty("type") && data.hasOwnProperty("dimmable") )? ', dimmable = "' + data.dimmable + '"':( data.hasOwnProperty("dimmable"))? 'type = "' + data.dimmable + '"' : "");
+        
         let query = 'UPDATE devices SET '+ update_fields +' WHERE id = '+ data.id ;  
        console.log(query);
         utils.query(query,(err, response) => {
