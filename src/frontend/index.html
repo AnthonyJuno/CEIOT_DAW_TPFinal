@@ -1,92 +1,74 @@
 <!DOCTYPE html>
-  <html>
-    <head>
-      <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-      <link type="text/css" rel="stylesheet" href="./static/css/materialize.min.css"  media="screen,projection"/>
-      <link type="text/css" rel="stylesheet" href="./static/css/styles.css"  media="screen,projection"/>
-      <script type="text/javascript" src="./static/js/materialize.min.js"></script>
-      <script type="text/javascript" src="js/persona.js"></script>
-      <script type="text/javascript" src="js/admin.js"></script>
-      <script type="text/javascript" src="js/user.js"></script>
-      <script type="text/javascript" src="js/device.js"></script>
-      <script type="text/javascript" src="js/framework.js"></script>
-      <script type="text/javascript" src="js/main.js"></script>
+<html>
 
-      <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    </head>
-    <body>
-        <main>
-            <!-- Navigation bar -->
-            <nav style="background-color:#124580">
-                <div class="nav-wrapper">
-                    <a href="#!" class="brand-logo left" style="margin-left: 15px;">Smart Home</a>
-                    <ul id="nav-mobile" class="right" style="margin-right: 15px;">
-                        <li><a href="#">Help</a></li>
-                    </ul>
-                </div>
-            </nav>	
-            <!-- Page Body -->
-            <div class="container">
-                <br/>
-                <h3 id="btnDoble">Smart Home Web Client!</h3>
-                <br/>
-                <div id="caja" style="background-color: rgb(128, 136, 146);"> 
-             
-                </div>
-                <div class="row">
-                    <div class="input-field col s12 m12 l12 xl12">
-                        <textarea id="textarea_1" class="materialize-textarea" style="height: 150px;" readonly></textarea>
-                    </div>
-                   <!--  <div class="col s4 m4 l2 xl2"> -->
-                    <div>
-                        <details>
-                            <summary>Add New Device</summary>
-                            <ul class="collection">
-                                <li class="collection-item" id="ci_new_device_name"><input type="text" id="fnewdevname" name="fname_new_device_name" value="Name"></li>
-                                <li class="collection-item" id="ci_new_device_desc"><input type="text" id="fnewdevdesc" name="fname_new_device_desc" value="Description"></li>
-                                <li class="collection-item" id="ci_new_device_type"> 
-                                    <select multiple  id="fnewdevtype" class="browser-default">
-                                      <option value="0">0 - Lampara</option>
-                                      <option value="1">1 - Perisana</option>
-                                    </select>
-                                    <label>Select Device Type</label>
-                                  </li>
-                                  <li class="collection-item" id="ci_new_device_dimmable"> 
-                                    <select multiple  id="fnewdevdimm" class="browser-default">
-                                      <option value="0">0 - No Dimmable</option>
-                                      <option value="1">1 - Dimmable</option>
-                                    </select>
-                                    <label>Select if has dimmable capabilities</label>
-                                  </li>
+<head>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link type="text/css" rel="stylesheet" href="./static/css/materialize.min.css" media="screen,projection" />
+  <link type="text/css" rel="stylesheet" href="./static/css/styles.css" media="screen,projection" />
+  <script type="text/javascript" src="./static/js/materialize.min.js"></script>
+  <script type="text/javascript" src="js/persona.js"></script>
+  <script type="text/javascript" src="js/admin.js"></script>
+  <script type="text/javascript" src="js/user.js"></script>
+  <script type="text/javascript" src="js/device.js"></script>
+  <script type="text/javascript" src="js/framework.js"></script>
+  <script type="text/javascript" src="js/main.js"></script>
 
-                              </ul>    
-                            <button id="btnAddDevice" class="btn waves-effect waves-light button-view green"><i class="material-icons left">add_box</i>Add Device</button>
-                        </details>
-                       
-                    </div>
-                </div>
-            </div>	
-        </main>
-		<!-- Page Footer -->
-        <footer class="page-footer" style="background-color:#124580">
-            <div class="container">
-                <div class="row">
-                    <div class="col l6 s6">
-                        <h5 class="white-text">Smart Home</h5>
-                        <p class="grey-text text-lighten-4">Copyright ### - 2021</p>
-                    </div>
-                    <div class="col l6 s6">
-                        <h5 class="white-text right-align">Contact</h5>
-                        <p class="white-text right-align">
-                            <a class="grey-text text-lighten-3" href="!#">Email | </a>
-                            <a class="grey-text text-lighten-3" href="!#">Twitter | </a>
-                            <a class="grey-text text-lighten-3" href="!#">LinkedIn</a>
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </footer>
-		<!--JavaScript at end of body for optimized loading-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+</head>
 
-    </body>
-  </html>
+<body>
+  <main>
+    <!-- Navigation bar -->
+    <nav style="background-color:#124580">
+      <div class="nav-wrapper">
+        <a href="#!" class="brand-logo left" style="margin-left: 15px;">Smart Home</a>
+        <ul id="nav-mobile" class="right" style="margin-right: 15px;">
+          <li><a href="#">Help</a></li>
+        </ul>
+      </div>
+    </nav>
+    <!-- Page Body -->
+    <div class="container">
+      <br />
+      <h3 id="btnDoble">Smart Home Web Client!</h3>
+      <br />
+      <div id="caja" style="background-color: rgb(255,255,255);">
+
+      </div>
+
+      <!-- Boton fijo con Modal -->
+      <div class="row">
+        <a id=btn_Add_Device class="waves-effect waves-light btn modal-trigger" href="#modal_add_device">Add Device</a>
+        <!-- Modal Structure -->
+        <div id="modal_add_device" class="modal">
+
+
+        </div>
+
+      </div>
+    </div>
+  </main>
+  <!-- Page Footer -->
+  <footer class="page-footer" style="background-color:#124580">
+    <div class="container">
+      <div class="row">
+        <div class="col l6 s6">
+          <h5 class="white-text">Smart Home</h5>
+          <p class="grey-text text-lighten-4">Copyright ### - 2021</p>
+        </div>
+        <div class="col l6 s6">
+          <h5 class="white-text right-align">Contact</h5>
+          <p class="white-text right-align">
+            <a class="grey-text text-lighten-3" href="!#">Email | </a>
+            <a class="grey-text text-lighten-3" href="!#">Twitter | </a>
+            <a class="grey-text text-lighten-3" href="!#">LinkedIn</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <!--JavaScript at end of body for optimized loading-->
+
+</body>
+
+</html>

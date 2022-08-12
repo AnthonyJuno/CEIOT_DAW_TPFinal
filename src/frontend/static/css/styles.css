@@ -16,3 +16,8 @@ main {
     color: brown;
     font-weight: bold;
 }
+.fixed-action-btn{
+    top:auto;
+    margin-right: 1%;
+    margin-top: 3%;
+    }

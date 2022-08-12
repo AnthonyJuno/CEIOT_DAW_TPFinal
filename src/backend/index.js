@@ -28,20 +28,48 @@ var  devices = [
     },
 ];
 //=======[ Main module code ]==================================================
-
+function validateInput (datos){
+    return ((datos.name != "" && datos.hasOwnProperty("name")) && (datos.type != "" && datos.hasOwnProperty("type")));
+}
 //Listat todos los dispositivos de la base de datos 
 
 app.get('/listDevices/', function(req, res) {
    
     console.log("pidieron ver la DB");
     setTimeout(function(){
-    utils.query('SELECT * from devices', (err, rows) => {
+    utils.query('SELECT * from devices', (err, rows) => {  //temporary using Select * but will limit fields for the ones needed on the app.
       //  utils.release();
         if(err) throw err;
         console.log('The data from devices table are: \n', rows);
         res.send(JSON.stringify(rows)).status(200);
     });
-    }, 2000);
+    }, 10);
+});
+
+app.get('/listDevicesPag/', function(req, res) {    // List devices in a paginated way (testing limiting the number of replies)
+    let pagenumber = req.query.pagenumber;
+    console.log("pidieron ver la pagina "+ pagenumber + " de la DB");
+    setTimeout(function(){
+    utils.query('SELECT * from devices LIMIT 10 OFFSET ' + pagenumber, (err, rows) => {  //temporary using Select * but will limit fields for the ones needed on the app.
+      //  utils.release();
+        if(err) throw err;
+        console.log('The data from devices table are: \n', rows);
+        res.send(JSON.stringify(rows)).status(200);
+    });
+    }, 10);
+});
+
+app.get('/countDevices/', function(req, res) {
+   
+    utils.query('SELECT COUNT(name) as totalrows from devices', (err, rows) => {  
+      //  utils.release();
+        if(err) throw err;
+       // totalRows = JSON.stringify(rows.name);
+       // console.log('The number of devices in devices table is: \n', totalRows, + " and rows = " + rows);
+        console.log("The number of rows in name is " + JSON.stringify(rows));
+        res.send(JSON.stringify(rows)).status(200);
+    });
+
 });
 
 // Listar solo el dispositivo con ID=
@@ -58,7 +86,7 @@ app.get('/queryRow', function(req,res) {
         console.log(data);
         res.send(JSON.stringify(data)).status(200);
     });
-    }, 2000);
+    }, 500);
 });
 
 // Inserta un dispositivo con los datos enviados en el cuerpo del POST
@@ -66,16 +94,32 @@ app.post("/insertrow",function(req,res){
     console.log("pidieron insertar en la DB");
     setTimeout(function(){
         let data = req.body;
-        let query = 'INSERT INTO devices (name, description, state, type, dimmable) VALUES ('+ JSON.stringify(data.name) +','+ JSON.stringify(data.description) +','+ data.state +','+ data.type +','+data.dimmable +')' ;  
-        utils.query(query,(err, response) => {
-            if(err) {
-                console.error(err);
-                return;
-            }
-           // console.log(response.insertId);
-            res.send(JSON.stringify(response)).status(200);
-        });
-        }, 2000);
+        let queryfields = "name, type";
+        let queryvalues = JSON.stringify(data.name) +', '+ JSON.stringify(data.type);
+        if (validateInput(data)){
+           //Description non mandatory       I should altertable to add default values 
+            queryfields +=((data.hasOwnProperty("description") && (data.description != ""))? ", description": "");
+            queryvalues +=((data.hasOwnProperty("description") && (data.description != ""))? ', ' + data.description : "");
+           //state non mandatory       
+            queryfields +=((data.hasOwnProperty("state") && (data.state != "")  )? ", state": "");
+            queryvalues +=((data.hasOwnProperty("state") && (data.state != "") )? ', ' + data.state : "");
+            //state non mandatory       
+            queryfields +=((data.hasOwnProperty("dimmable") && (data.dimmable != ""))? ", dimmable": "");
+            queryvalues +=((data.hasOwnProperty("dimmable") && (data.dimmable != "") )? ', ' + data.dimmable : "");
+            //Query build
+            query = 'INSERT INTO devices ('+queryfields+') VALUES ('+queryvalues+')' ;  
+            console.log(query);
+            utils.query(query,(err, response) => {
+                if(err) {
+                    console.error(err);
+                    return;
+                }
+                res.send(JSON.stringify(response)).status(200);
+            });
+        }else{
+            res.send("Bad Data").status(300);
+        }
+    }, 500);
     });
 
 //Cambiar el estado del dispositivo
@@ -91,7 +135,7 @@ app.post("/updateState",function(req,res){
             }
             res.send(JSON.stringify(response)).status(200);
         });
-        }, 2000);
+        }, 500);
     });
 
 //Cambiar cualquier campo del dispositivo
@@ -110,8 +154,6 @@ app.post("/updateDevice",function(req,res){
         update_fields += (((data.hasOwnProperty("name") || data.hasOwnProperty("type")) && data.hasOwnProperty("description")  )? ', description = "' + data.description + '"' :( data.hasOwnProperty("description"))? 'description = "' + data.description + '"': "");
         // si hubo alguno de los campos anteriores, o si solo hay estado
         update_fields += (((data.hasOwnProperty("name") || data.hasOwnProperty("type") || data.hasOwnProperty("description")) && data.hasOwnProperty("state")  )? ', state = "' + data.state + '"':( data.hasOwnProperty("state"))? 'state = "' + data.state + '"' : "");
-        // //update del type
-        // update_fields += (((data.hasOwnProperty("name") || data.hasOwnProperty("type") || data.hasOwnProperty("description") || data.hasOwnProperty("state")) && data.hasOwnProperty("type")  )? ', type = "' + data.type + '"':( data.hasOwnProperty("type"))? 'type = "' + data.type + '"' : "");
         //update del dimmable
         update_fields += (((data.hasOwnProperty("name") || data.hasOwnProperty("type") || data.hasOwnProperty("description") || data.hasOwnProperty("state")) || data.hasOwnProperty("type") && data.hasOwnProperty("dimmable") )? ', dimmable = "' + data.dimmable + '"':( data.hasOwnProperty("dimmable"))? 'type = "' + data.dimmable + '"' : "");
         
@@ -124,7 +166,7 @@ app.post("/updateDevice",function(req,res){
             }
             res.send(JSON.stringify(response)).status(200);
         });
-        }, 2000);
+        }, 500);
     });
 
 
@@ -144,7 +186,7 @@ app.post("/updateDevice",function(req,res){
     
                 res.send(JSON.stringify(response)).status(200);
             });
-            }, 2000);
+            }, 500);
         });
 
 
@@ -154,7 +196,7 @@ app.get('/devices/', function(req, res) {
     console.log("Alguien pidio divices!");
     setTimeout(function(){
         res.send(JSON.stringify(devices)).status(200);
-    }, 2000);
+    }, 500);
     
 });
 
