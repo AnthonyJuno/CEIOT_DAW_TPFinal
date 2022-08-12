@@ -17,22 +17,69 @@ class Main implements EventListenerObject, ResponseLister {
 
         return (false)
     }
-
-
+    private buildAddDevModal():string {
+        return (`<div class="modal-content">
+        <h4>Add Device</h4>
+        <div class="row">
+          <form class="col s12">
+              <div class="row">
+              <div class="input-field col s6">
+                  <input type="text" id="fnewdevname" name="fnewdevname" value="" placeholder= "Device Name">
+                  <label for ="fnewdevname"> Device Name: </label>
+              </div>
+              <div class="input-field col s6">
+              <input type="text" id="fnewdevdesc" name="fnewdevdesc" value="" placeholder="Description">
+                  <label for ="fnewdevdesc"> Description: </label>
+              </div>
+              </div>  
+      </div>
+      <div class="row">
+            <div class="col s4">
+                <label for ="fnewdevtype"> 
+                <select class="icons" id="fnewdevtype">
+                    <option value="0" data-icon="../static/images/0.png">Lampara</option> 
+                    <option value="1" data-icon="../static/images/1.png">Persiana</option> 
+               </select>
+               <label>Select device type </label>
+           </div>  
+      <div class="input-field col s4">                                   
+          <label for = "fnewdevdimm"> 
+          <input type="checkbox"  id="fnewdevdimm" class="filled-in" />
+          <span> Dimmable Compatible</span></label>
+      </div> 
+      </div>
+      <div class="modal-footer">
+      <button id="btnAddDevice" class="btn waves-effect waves-light button-view green"><i class="material-icons left">add_box</i>Add Device</button>
+      </div>
+    </div>`)
+    };
+    private build_type_list (type:number):string{
+        let list_types:string = "";
+        let type_names = ["Lampara", "Persiana"]    //Here I could query the DB for all List types
+        for (var i in type_names) {
+            let j = parseInt(i);
+            let selected = (( j = type )? "selected": "");
+            list_types += `<option ${selected} value="${i}" data-icon="../static/images/${i}.png">`+ type_names[i] +`</option>`
+        }
+        return(list_types)
+    };
     public handlerResponse(status: number, response: string) {
         if (status == 200) {
             let respuestaString: string = response;
             let respuesta: Array<Device> = JSON.parse(respuestaString);
             let cajaDiv = document.getElementById("caja");
-
+            console.log("PAGINACION: " + Math.ceil(respuesta.length / 10));
             let datosVisuale: string = `<ul class="collection" >`
             for (let disp of respuesta) {
                 let avatar_collection: string = "";
                 let edit_collection: string = "";
                 let dimmable: boolean = disp.dimmable;
                 let switch_icon: string = "";
+                let type_options: string = this.build_type_list(disp.type);
                 let state_checked: string = ((JSON.stringify(disp.state) > "1") ? 'checked = "checked"' : "")  //Read state value and set accordingly the checkbox state.
                 let dimm_checked: string = ((dimmable) ? 'checked = "checked"' : "") // For update checkbox value
+                // define the type for select drop down options
+
                 //Build device list and include in expanding lines provided by HTML5
                 avatar_collection += ` <li href="#!" class="collection-item avatar z-depth-3">`;
                 avatar_collection += `<img src="../static/images/${disp.type}.png" alt="" class="circle">`;
@@ -63,8 +110,7 @@ class Main implements EventListenerObject, ResponseLister {
                                           <div class="col s4">
                                               <label for ="ftype_${disp.id}"> 
                                               <select class="icons" id="ftype_${disp.id}">
-                                                  <option value="0" data-icon="../static/images/0.png">Lampara</option> 
-                                                  <option value="1" data-icon="../static/images/1.png">Persiana</option> 
+                                                ${type_options}
                                              </select>
                                              <label>Select device type </label>
                                          </div>  
@@ -79,20 +125,8 @@ class Main implements EventListenerObject, ResponseLister {
                 datosVisuale += `<details>`;
                 datosVisuale += `<summary>${avatar_collection} </summary>`;
                 datosVisuale += edit_collection;
-                //   datosVisuale += ` <!-- Modal Structure -->
-                //                         <div id="modal_${disp.id}" class="modal">
-                //                             <div class="modal-content">
-                //                                 <h4>Device Update</h4>
-                //                                 <p>TEXTO</p>
-                //                             </div>
-                //                         <div class="modal-footer">
-                //                         <a href="#!" class="modal-close waves-effect waves-green btn-flat">OK</a>
-                //                         </div>
-                //                      </div>`
-                //   datosVisuale += ` <div class=" right-align"> <button data-target="modal_${disp.id}" id="btn_update_${disp.id}" class="btn waves-effect waves-light button-view  modal-trigger color="teal"><i class="material-icons left">sync</i>Update Device</button> `;
+                //Update and remove devices buttons
                 datosVisuale += ` <div class=" right-align"> <button id="btn_update_${disp.id}" class="btn waves-effect waves-light button-view  color="teal"><i class="material-icons left">sync</i>Update Device</button> `;
-                //datosVisuale +=   `  <button data-target="modal_${disp.id}" class="btn modal-trigger">Modal</button>`
-
                 datosVisuale += ` <button id="btn_delete_${disp.id}" class="btn waves-effect waves-light button-view red"><i class="material-icons left">delete_forever</i>Remove Device</button> </div> </div> `;
 
 
@@ -115,7 +149,7 @@ class Main implements EventListenerObject, ResponseLister {
 
                 let btn_delete = document.getElementById("btn_delete_" + disp.id); // delete button
                 btn_delete.addEventListener("click", this);
-                let btn_update = document.getElementById("btn_update_" + disp.id); // uodate button
+                let btn_update = document.getElementById("btn_update_" + disp.id); // update button
                 btn_update.addEventListener("click", this);
 
             }
@@ -128,7 +162,7 @@ class Main implements EventListenerObject, ResponseLister {
     handlerResponseUpdateDevice(status: number, response: string) {
         if (status == 200) {
             M.toast({ html: 'Device updated succesfuly' })
-
+           
         } else {
             M.toast({ html: 'Error while updating' })
         }
@@ -174,16 +208,15 @@ class Main implements EventListenerObject, ResponseLister {
 
         } else if (e.type == "click" && objetoEvento.id.startsWith("btn_update")) {                  // Update Device
             console.log("Se hizo click para actualizar el device " + objetoEvento.id.substring(11))
-            // Load all values from document before building update json paramenter (due to TS cast)
-            let id = objetoEvento.id.substring(11);
-            let fname = (document.getElementById("fname_" + id) as HTMLInputElement).value;
-            let fdescription = (document.getElementById("fdescription_" + id) as HTMLInputElement).value;
-            let fdimmable = (((document.getElementById("fdimm_" + id) as HTMLInputElement).checked) ? 1 : 0);
-            let ftype = ((document.getElementById("ftype_" + id) as HTMLSelectElement).selectedIndex);
-            let datos = { "id": id, "name": fname, "type": ftype, "description": fdescription, "dimmable": fdimmable };
+            let datos = {} as any;
+            datos.id = objetoEvento.id.substring(11);
+            datos.name = (document.getElementById("fname_" + datos.id) as HTMLInputElement).value;
+            datos.description = (document.getElementById("fdescription_" + datos.id) as HTMLInputElement).value;
+            datos.dimmable = (((document.getElementById("fdimm_" + datos.id) as HTMLInputElement).checked) ? 1 : 0);
+            datos.type = ((document.getElementById("ftype_" + datos.id) as HTMLSelectElement).selectedIndex);
             if (this.validateInput(datos)) {
                 this.framework.ejecutarRequest("POST", "http://localhost:8000/updateDevice/", this, datos)
-                M.toast({ html: 'Device updated succesfuly' })
+              //  M.toast({ html: 'Device updated succesfuly' })
             } else {
                 M.toast({ html: 'Error, name cannot be empty' })
             }
@@ -200,8 +233,8 @@ class Main implements EventListenerObject, ResponseLister {
             let datos = { "name": fname, "description": fdescription, "state": fstat, "type": ftype, "dimmable": fdimmable };
             console.log(datos)
             if (this.validateInput(datos)) {
-                this.framework.ejecutarRequest("POST", "http://localhost:8000/insertRow/", this, datos)
-                document.getElementsByClassName("modal-content")[0].style.display = "none";
+                this.framework.ejecutarRequest("POST", "http://localhost:8000/insertRow/", this, datos);
+                ((document.getElementsByClassName("modal-content")[0] as HTMLModElement).style).display = "none";
             } else {
                 M.toast({ html: 'Error, name cannot be empty' })
             }
@@ -209,44 +242,11 @@ class Main implements EventListenerObject, ResponseLister {
         }  else if (e.type == "click" && objetoEvento.id == "btn_Add_Device") {                       // Add device
             console.log("Se hizo click para agregar un device")
             let add_device_modal = document.getElementById("modal_add_device")
-            add_device_modal.innerHTML =`<div class="modal-content">
-            <h4>Add Device</h4>
-            <div class="row">
-              <form class="col s12">
-                  <div class="row">
-                  <div class="input-field col s6">
-                      <input type="text" id="fnewdevname" name="fnewdevname" value="" placeholder= "Device Name">
-                      <label for ="fnewdevname"> Device Name: </label>
-                  </div>
-                  <div class="input-field col s6">
-                  <input type="text" id="fnewdevdesc" name="fnewdevdesc" value="" placeholder="Description">
-                      <label for ="fnewdevdesc"> Description: </label>
-                  </div>
-                  </div>  
-          </div>
-          <div class="row">
-                <div class="col s4">
-                    <label for ="fnewdevtype"> 
-                    <select class="icons" id="fnewdevtype">
-                        <option value="0" data-icon="../static/images/0.png">Lampara</option> 
-                        <option value="1" data-icon="../static/images/1.png">Persiana</option> 
-                   </select>
-                   <label>Select device type </label>
-               </div>  
-          <div class="input-field col s4">                                   
-              <label for = "fnewdevdimm"> 
-              <input type="checkbox"  id="fnewdevdimm" class="filled-in" />
-              <span> Dimmable Compatible</span></label>
-          </div> 
-          </div>
-          <div class="modal-footer">
-          <button id="btnAddDevice" class="btn waves-effect waves-light button-view green"><i class="material-icons left">add_box</i>Add Device</button>
-          </div>
-        </div>`
-        var elems1 = document.querySelectorAll('.modal');
-        var instances_modal = M.Modal.init(elems1, "");
-        let btn2 = document.getElementById("btnAddDevice");
-        btn2.addEventListener("click", this);
+            add_device_modal.innerHTML = this.buildAddDevModal();
+            var elems1 = document.querySelectorAll('.modal');
+            var instances_modal = M.Modal.init(elems1, "");
+            let btn2 = document.getElementById("btnAddDevice");
+            btn2.addEventListener("click", this);
         
         } else if (e.type == "click" && objetoEvento.id.startsWith("rg_")) {                   // update dimmable devices state value
             let id = objetoEvento.id.substring(3);

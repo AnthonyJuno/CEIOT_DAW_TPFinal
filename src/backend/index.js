@@ -97,15 +97,15 @@ app.post("/insertrow",function(req,res){
         let queryfields = "name, type";
         let queryvalues = JSON.stringify(data.name) +', '+ JSON.stringify(data.type);
         if (validateInput(data)){
-           //Description non mandatory       I should altertable to add default values 
+           //Description non mandatory       
             queryfields +=((data.hasOwnProperty("description") && (data.description != ""))? ", description": "");
-            queryvalues +=((data.hasOwnProperty("description") && (data.description != ""))? ', ' + data.description : "");
+            queryvalues +=((data.hasOwnProperty("description") && (data.description != ""))? ', "' + data.description + '"' : "");
            //state non mandatory       
             queryfields +=((data.hasOwnProperty("state") && (data.state != "")  )? ", state": "");
-            queryvalues +=((data.hasOwnProperty("state") && (data.state != "") )? ', ' + data.state : "");
+            queryvalues +=((data.hasOwnProperty("state") && (data.state != "") )? ', "'+ data.state +'"' : "");
             //state non mandatory       
             queryfields +=((data.hasOwnProperty("dimmable") && (data.dimmable != ""))? ", dimmable": "");
-            queryvalues +=((data.hasOwnProperty("dimmable") && (data.dimmable != "") )? ', ' + data.dimmable : "");
+            queryvalues +=((data.hasOwnProperty("dimmable") && (data.dimmable != "") )? ', "' + data.dimmable+ '"' : "");
             //Query build
             query = 'INSERT INTO devices ('+queryfields+') VALUES ('+queryvalues+')' ;  
             console.log(query);

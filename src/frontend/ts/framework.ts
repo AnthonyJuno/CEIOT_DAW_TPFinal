@@ -6,7 +6,7 @@ class FrameWork{
           if (xmlHttp.readyState == 4) {
             if (metodo == "GET") {
               lister.handlerResponse(xmlHttp.status,xmlHttp.responseText)
-            } else if (metodo == "POST" && url.includes("UpdateDevice") ) {
+            } else if (metodo == "POST" && url.includes(`/updateDevice/`) ) {
               lister.handlerResponseUpdateDevice(xmlHttp.status,xmlHttp.responseText)
             } else if (metodo == "POST" && url.includes("deleteDevice") ) {
               lister.handlerResponseRemoveDevice(xmlHttp.status,xmlHttp.responseText)
