@@ -172,25 +172,150 @@ Completá todos los detalles de funcionamiento sobre el backend, sus interaccion
 
 Completá todos los endpoints del backend con los metodos disponibles, los headers y body que recibe, lo que devuelve, ejemplos, etc.
 
-1) Devolver el estado de los dispositivos.
+1) Listar todos los dispositivos de la base de datos.
 
 ```json
 {
+    "route":"/listDevices/",
     "method": "get",
     "request_headers": "application/json",
     "request_body": "",
+    "request_parameters":"",
     "response_code": 200,
-    "request_body": {
+    "response_body": {
         "devices": [
             {
-                "id": 1,
-                "status": true,
-                "description": "Kitchen light"
+                "id": "DeviceID",
+                "name": "Device Name",
+                "description": "Device Description",
+                "type":"Device Type",
+                "state":"Device State: 0=Off, 1=On",
+                "dimmable":"Device Dimmerizable: 0=No, 1=Yes"           
             }
         ]
     },
 }
 ``` 
+2) Listar solo un dispositivo de la base de datos.
+
+```json
+{
+    "route":"/queryRow/",
+    "method": "get",
+    "request_headers": "application/json",
+    "request_body": "",
+    "request_parameters":"deviceID",
+    "response_code": 200,
+    "response_body": {
+        "devices": [
+            {
+                "id": "DeviceID",
+                "name": "Device Name",
+                "description": "Device Description",
+                "type":"Device Type",
+                "state":"Device State: 0=Off, 1=On",
+                "dimmable":"Device Dimmerizable: 0=No, 1=Yes"            
+            }
+        ]
+    },
+}
+``` 
+
+3) Listar solo un dispositivo de la base de datos.
+
+```json
+{
+    "route":"/insertrow/",
+    "method": "post",
+    "request_headers": "application/json",
+    "request_body": 
+                {
+                "name": "Device Name",
+                "description": "Device Description - Optional",
+                "type":"Device Type",
+                "state":"Device State: 0=Off, 1=On - Optional",
+                "dimmable":"Device Dimmerizable: 0=No, 1=Yes - Optional"            
+            }
+    ,
+    "request_parameters":"",
+    "response_code": 200,
+    "response_body": {
+        "response":"DB Inserted row response / Bad data"
+    },
+}
+``` 
+
+4) Actualizar el estado de un dispositivo de la base de datos.
+
+```json
+{
+    "route":"/updateState/",
+    "method": "post",
+    "request_headers": "application/json",
+    "request_body": 
+                {
+                "id": "Device ID",
+                "state":"Device State: 0=Off, 1=On - Optional"
+            }
+    ,
+    "request_parameters":"",
+    "response_code": 200,
+    "response_body": {
+       
+    },
+}
+``` 
+5) Modificar un dispositivo de la base de datos.
+
+```json
+{
+    "route":"/updateDevice/",
+    "method": "post",
+    "request_headers": "application/json",
+    "request_body": 
+                {
+                "id": "Device ID",
+                "name": "Device Name - Optional",
+                "description": "Device Description - Optional",
+                "type":"Device Type - Optional",
+                "state":"Device State: 0=Off, 1=On - Optional",
+                "dimmable":"Device Dimmerizable: 0=No, 1=Yes - Optional"            
+            }
+    ,
+    "request_parameters":"",
+    "response_code": 200,
+    "response_body": {
+       
+    },
+}
+``` 
+
+6) Eliminar un dispositivo de la base de datos.
+
+```json
+{
+    "route":"/deleteDevice/",
+    "method": "post",
+    "request_headers": "application/json",
+    "request_body": 
+                {
+                "id": "Device ID",
+                "name": "Device Name - Optional",
+                "description": "Device Description - Optional",
+                "type":"Device Type - Optional",
+                "state":"Device State: 0=Off, 1=On - Optional",
+                "dimmable":"Device Dimmerizable: 0=No, 1=Yes - Optional"            
+            }
+    ,
+    "request_parameters":"",
+    "response_code": 200,
+    "response_body": {
+       
+    },
+}
+```
+
+
 
 </details>
 
