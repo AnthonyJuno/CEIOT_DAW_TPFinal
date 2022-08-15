@@ -45,7 +45,7 @@ CREATE TABLE `Devices` (
 -- Dumping data for table `Devices`
 --
 
-INSERT INTO `Devices` (`id`, `name`, `description`, `state`, `type`, 'dimmable') VALUES
+INSERT INTO `Devices` (`id`, `name`, `description`, `state`, `type`, `dimmable`) VALUES
 (1, 'Lampara 1', 'Luz living', 1, 0, 1),
 (2, 'Lampara 2', 'Luz cocina', 0, 0, 0),
 (3, 'Velador', 'Velador living', 1, 0, 1),
@@ -73,15 +73,7 @@ ALTER TABLE `Devices`
 ALTER TABLE `Devices`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 COMMIT;
-ALTER TABLE `Devices`
-  MODIFY `state` int(11) NOT NULL DEFAULT 0;
-COMMIT;
-ALTER TABLE `Devices`
-  MODIFY `type` int(11) NOT NULL DEFAULT 0;
-COMMIT;
-ALTER TABLE `Devices`
-  MODIFY `dimmable` tinyint(1) NOT NULL DEFAULT 0;
-COMMIT;
+
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
