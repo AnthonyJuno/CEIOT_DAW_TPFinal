@@ -35,10 +35,10 @@ SET time_zone = "+00:00";
 CREATE TABLE `Devices` (
   `id` int(11) NOT NULL,
   `name` varchar(64) NOT NULL,
-  `description` varchar(128) NOT NULL DEFAULT " ",
+  `description` varchar(128) NOT NULL,
   `state` int(11) NOT NULL DEFAULT 0,
   `type` int(11) NOT NULL DEFAULT 0,
-  'dimmable' tinyint(1) NOT NULL DEFAULT 0
+  `dimmable` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -72,6 +72,15 @@ ALTER TABLE `Devices`
 --
 ALTER TABLE `Devices`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+COMMIT;
+ALTER TABLE `Devices`
+  MODIFY `state` int(11) NOT NULL DEFAULT 0;
+COMMIT;
+ALTER TABLE `Devices`
+  MODIFY `type` int(11) NOT NULL DEFAULT 0;
+COMMIT;
+ALTER TABLE `Devices`
+  MODIFY `dimmable` tinyint(1) NOT NULL DEFAULT 0;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
