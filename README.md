@@ -158,16 +158,27 @@ En esta sección podés ver los detalles específicos de funcionamiento del cód
 
 ### Agregar un dispositivo
 
-Completá los pasos para agregar un dispositivo desde el cliente web.
+El siguiente es el paso a paso para agregar un dispositivo:<br>
+
+Seleccionar la opción de agregar un dispositivo (Add Device) <br>
+![Implementacion](doc/AddDevice1.png) <br>
+
+
+![Implementacion](doc/AddDevice2.png) <br>
+Completar los datos en el formulario. El nombre del dispositivo no puede quedar sin definir <br>
+
+![Implementacion](doc/AddDevice3.png) <br>
+Corroborar que el dispositivo se lista al final, y que el mensaje fue exitoso<br>
+
+![Implementacion](doc/AddDevice4.png)<br> 
 
 ### Frontend
 
 Completá todos los detalles sobre cómo armaste el frontend, sus interacciones, etc.
 
 ### Backend
-
-Completá todos los detalles de funcionamiento sobre el backend, sus interacciones con el cliente web, la base de datos, etc.
-
+Esquema de APIs usadas por el Backend: <br>
+![Implementacion](doc/API_Structure.png) <br>
 <details><summary><b>Ver los endpoints disponibles</b></summary><br>
 
 Completá todos los endpoints del backend con los metodos disponibles, los headers y body que recibe, lo que devuelve, ejemplos, etc.
@@ -200,7 +211,7 @@ Completá todos los endpoints del backend con los metodos disponibles, los heade
 
 ```json
 {
-    "route":"/queryRow/",
+    "route":"/queryDevice/",
     "method": "get",
     "request_headers": "application/json",
     "request_body": "",
@@ -208,14 +219,14 @@ Completá todos los endpoints del backend con los metodos disponibles, los heade
     "response_code": 200,
     "response_body": {
         "devices": [
-            {
-                "id": "DeviceID",
-                "name": "Device Name",
-                "description": "Device Description",
-                "type":"Device Type",
-                "state":"Device State: 0=Off, 1=On",
-                "dimmable":"Device Dimmerizable: 0=No, 1=Yes"            
-            }
+                    {
+                        "id": "DeviceID",
+                        "name": "Device Name",
+                        "description": "Device Description",
+                        "type":"Device Type",
+                        "state":"Device State: 0=Off, 1=On",
+                        "dimmable":"Device Dimmerizable: 0=No, 1=Yes"            
+                    }
         ]
     },
 }
@@ -225,7 +236,7 @@ Completá todos los endpoints del backend con los metodos disponibles, los heade
 
 ```json
 {
-    "route":"/insertrow/",
+    "route":"/insertDevice/",
     "method": "post",
     "request_headers": "application/json",
     "request_body": 
@@ -245,7 +256,7 @@ Completá todos los endpoints del backend con los metodos disponibles, los heade
 }
 ``` 
 
-4) Actualizar el estado de un dispositivo de la base de datos.
+4) Actualizar el estado (on/Off) de un dispositivo de la base de datos.
 
 ```json
 {

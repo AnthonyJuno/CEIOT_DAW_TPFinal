@@ -73,7 +73,7 @@ app.get('/countDevices/', function(req, res) {
 });
 
 // Listar solo el dispositivo con ID=
-app.get('/queryRow', function(req,res) {
+app.get('/queryDevice', function(req,res) {
     setTimeout(function(){
     let deviceID = req.query.deviceID;
     let query = 'SELECT * FROM devices WHERE id =' + deviceID;    
@@ -90,7 +90,7 @@ app.get('/queryRow', function(req,res) {
 });
 
 // Inserta un dispositivo con los datos enviados en el cuerpo del POST
-app.post("/insertrow",function(req,res){
+app.post("/insertDevice",function(req,res){
     console.log("pidieron insertar en la DB");
     setTimeout(function(){
         let data = req.body;

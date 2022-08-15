@@ -184,7 +184,7 @@ class Main implements EventListenerObject, ResponseLister {
             M.toast({ html: 'Device removed' })
 
         } else {
-            alert("Error Eliminar")
+            M.toast({ html: 'Error while deleting device' })
         }
 
     }
@@ -233,7 +233,7 @@ class Main implements EventListenerObject, ResponseLister {
             let datos = { "name": fname, "description": fdescription, "state": fstat, "type": ftype, "dimmable": fdimmable };
             console.log(datos)
             if (this.validateInput(datos)) {
-                this.framework.ejecutarRequest("POST", "http://localhost:8000/insertRow/", this, datos);
+                this.framework.ejecutarRequest("POST", "http://localhost:8000/insertDevice/", this, datos);
                 ((document.getElementsByClassName("modal-content")[0] as HTMLModElement).style).display = "none";
             } else {
                 M.toast({ html: 'Error, name cannot be empty' })
