@@ -68,7 +68,6 @@ class Main implements EventListenerObject, ResponseLister {
             let respuestaString: string = response;
             let respuesta: Array<Device> = JSON.parse(respuestaString);
             let cajaDiv = document.getElementById("caja");
-            console.log("PAGINACION: " + Math.ceil(respuesta.length / 10));
             let datosVisuale: string = `<ul class="collection" >`
             for (let disp of respuesta) {
                 let avatar_collection: string = "";
@@ -126,8 +125,8 @@ class Main implements EventListenerObject, ResponseLister {
                 datosVisuale += `<summary>${avatar_collection} </summary>`;
                 datosVisuale += edit_collection;
                 //Update and remove devices buttons
-                datosVisuale += ` <div class=" right-align"> <button id="btn_update_${disp.id}" class="btn waves-effect waves-light button-view  color="teal"><i class="material-icons left">sync</i>Update Device</button> `;
-                datosVisuale += ` <button id="btn_delete_${disp.id}" class="btn waves-effect waves-light button-view red"><i class="material-icons left">delete_forever</i>Remove Device</button> </div> </div> `;
+                datosVisuale += ` <div class=" right-align"> <button id="btn_update_${disp.id}" class="btn waves-effect waves-light button-view  color="teal"><i class="material-icons left">sync</i>Update</button> `;
+                datosVisuale += ` <button id="btn_delete_${disp.id}" class="btn waves-effect waves-light button-view red"><i class="material-icons left">delete_forever</i>Delete</button> </div> </div> `;
 
 
                 datosVisuale += `</details>`;
@@ -138,7 +137,8 @@ class Main implements EventListenerObject, ResponseLister {
             cajaDiv.innerHTML = datosVisuale;
             var elems = document.querySelectorAll('select');
             var instances = M.FormSelect.init(elems, "");
-
+            var elems2 = document.querySelectorAll('.fixed-action-btn');
+            var instances_float = M.FloatingActionButton.init(elems2, { direction: 'top', hoverEnabled: true });
             M.updateTextFields();
             for (let disp of respuesta) {
 
@@ -156,7 +156,7 @@ class Main implements EventListenerObject, ResponseLister {
 
 
         } else {
-            alert("Algo salio mal")
+            alert("Failed to load devices")
         }
     }
     handlerResponseUpdateDevice(status: number, response: string) {
@@ -166,7 +166,7 @@ class Main implements EventListenerObject, ResponseLister {
         } else {
             M.toast({ html: 'Error while updating' })
         }
-        this.framework.ejecutarRequest("GET", "http://localhost:8000/listdevices", this)
+      //  this.framework.ejecutarRequest("GET", "http://localhost:8000/listdevices", this)
     }
 
     handlerResponseAddDevice(status: number, response: string) {
@@ -176,7 +176,7 @@ class Main implements EventListenerObject, ResponseLister {
         } else {
             M.toast({ html: 'Error while updating' })
         }
-        this.framework.ejecutarRequest("GET", "http://localhost:8000/listdevices", this)
+       // this.framework.ejecutarRequest("GET", "http://localhost:8000/listdevices", this)
     }
 
     handlerResponseRemoveDevice(status: number, response: string) {
@@ -190,13 +190,13 @@ class Main implements EventListenerObject, ResponseLister {
     }
 
     public handleEvent(e: Event): void {
-        let objetoEvento = <HTMLInputElement>e.target;
+        let objetoEvento = <HTMLElement>e.target;
         console.log("target: " + e.target);
         if (e.type == "click" && objetoEvento.id.startsWith("cb_")) {    // Update Device State (On= 10,  off =0)
             let state: number = 0;
-            ((objetoEvento.checked) ? state = 10 : 0);
+            ((((objetoEvento) as HTMLInputElement).checked) ? state = 10 : 0);
             console.log("Se hizo click para prender o apagar")
-            let datos = { "id": objetoEvento.id.substring(3), "state": objetoEvento.checked };
+            let datos = { "id": objetoEvento.id.substring(3), "state": state };
             this.framework.ejecutarRequest("POST", "http://localhost:8000/updateState/", this, datos)
 
         } else if (e.type == "click" && objetoEvento.id.startsWith("btn_delete_")) {  // Delete device
