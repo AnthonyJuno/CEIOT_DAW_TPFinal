@@ -94,8 +94,8 @@ app.post("/insertDevice", function (req, res) {
         console.log(req.body);
         if (validateInput(data)) {
             let querydescription = ((req.body.hasOwnProperty("description") && (req.body.description != "")) ? req.body.description : "");
-            let querystate = ((req.body.hasOwnProperty("state") && (req.body.state != "")) ? req.body.state  : 0);
-            let querydimmable = ((req.body.hasOwnProperty("dimmable") && (req.body.dimmable != "")) ?  req.body.dimmable : 0);
+            let querystate = ((req.body.hasOwnProperty("state") && (req.body.state === 0 || req.body.state === 1)) ? req.body.state  : 0);
+            let querydimmable = ((req.body.hasOwnProperty("dimmable") && (req.body.dimmable === 0 || req.body.dimmable === 1)) ?  req.body.dimmable : 0);
             //Query build
             query = 'INSERT INTO Devices (name, description, type, state, dimmable ) VALUES ( ?, ?, ?, ?, ? )';
             console.log(query);
@@ -139,7 +139,7 @@ app.post("/updateDevice", function (req, res) {
             console.log(device[0].name);
             if ( (device.length > 0)) { //device exists in the DB
                 let querydescription = ((req.body.hasOwnProperty("description") && (req.body.description != "")) ? req.body.description : device[0].description);
-                let querystate = ((req.body.hasOwnProperty("state") && (req.body.state != "")) ? Number(req.body.state) : Number(device[0].state));
+                let querystate = ((req.body.hasOwnProperty("state") && (req.body.state === 0 || req.body.state === 1)) ? Number(req.body.state) : Number(device[0].state));
                 //to be fixed: dimmable should enforce a boolean type
                 let querydimmable = ((req.body.hasOwnProperty("dimmable") && (req.body.dimmable === 0 || req.body.dimmable === 1)) ?  Number(req.body.dimmable) : Number(device[0].dimmable));
                 let queryname = ((req.body.hasOwnProperty("name") && req.body.name != "")? req.body.name: device[0].name);
