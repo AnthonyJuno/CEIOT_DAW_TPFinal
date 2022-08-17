@@ -140,9 +140,10 @@ app.post("/updateDevice", function (req, res) {
             if ( (device.length > 0)) { //device exists in the DB
                 let querydescription = ((req.body.hasOwnProperty("description") && (req.body.description != "")) ? req.body.description : device[0].description);
                 let querystate = ((req.body.hasOwnProperty("state") && (req.body.state != "")) ? Number(req.body.state) : Number(device[0].state));
-                let querydimmable = ((req.body.hasOwnProperty("dimmable") && (req.body.dimmable === 0 || req.body.dimmable === 1)) ?  Number(req.body.dimmable) : Number(device[0].dimmable));
                 //to be fixed: dimmable should enforce a boolean type
+                let querydimmable = ((req.body.hasOwnProperty("dimmable") && (req.body.dimmable === 0 || req.body.dimmable === 1)) ?  Number(req.body.dimmable) : Number(device[0].dimmable));
                 let queryname = ((req.body.hasOwnProperty("name") && req.body.name != "")? req.body.name: device[0].name);
+                // to be fixed: type should be a list provided by the DB.
                 let querytype = ((req.body.hasOwnProperty("type") && (req.body.type ===1 || req.body.type ===0)) ? Number(req.body.type): Number(device[0].type));
                 let query = 'UPDATE Devices SET name = ?, description = ?, type = ?, state = ?, dimmable = ?  WHERE id = ?';
                 console.log(query);
