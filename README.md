@@ -168,7 +168,7 @@ Seleccionar la opción de agregar un dispositivo (Add Device) <br>
 Completar los datos en el formulario. El nombre del dispositivo no puede quedar sin definir <br>
 
 ![Implementacion](doc/AddDevice3.png) <br>
-Corroborar que el dispositivo se lista al final, y que el mensaje fue exitoso<br>
+Corroborar que el dispositivo fue agregado al final de la, y que el mensaje fue exitoso<br>
 
 ![Implementacion](doc/AddDevice4.png)<br> 
 
@@ -232,7 +232,7 @@ Completá todos los endpoints del backend con los metodos disponibles, los heade
 }
 ``` 
 
-3) Listar solo un dispositivo de la base de datos.
+3) Insertar un dispositivo en la base de datos.
 
 ```json
 {
@@ -256,7 +256,7 @@ Completá todos los endpoints del backend con los metodos disponibles, los heade
 }
 ``` 
 
-4) Actualizar el estado (on/Off) de un dispositivo de la base de datos.
+4) Actualizar el estado (On/Off) de un dispositivo de la base de datos.
 
 ```json
 {
