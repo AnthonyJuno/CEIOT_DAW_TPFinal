@@ -178,7 +178,7 @@ El siguiente diagrama muestra el esquema de funcionamiento del frontend de la ap
 
 ### Backend
 Esquema de APIs usadas por el Backend: <br>
-![Implementacion](doc/API_Structure.png) <br>
+![Backend](doc/API_Structure.png) <br>
 <details><summary><b>Ver los endpoints disponibles</b></summary><br>
 
 Completá todos los endpoints del backend con los metodos disponibles, los headers y body que recibe, lo que devuelve, ejemplos, etc.
