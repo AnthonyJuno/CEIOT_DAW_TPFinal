@@ -136,7 +136,7 @@ app.post("/updateDevice", function (req, res) {
                 console.error(err);
                 return;
             }
-            console.log(device[0].name);
+           // console.log(device[0].name);
             if ( (device.length > 0)) { //device exists in the DB
                 let querydescription = ((req.body.hasOwnProperty("description") && (req.body.description != "")) ? req.body.description : device[0].description);
                 let querystate = ((req.body.hasOwnProperty("state") && (req.body.state === 0 || req.body.state === 1)) ? Number(req.body.state) : Number(device[0].state));

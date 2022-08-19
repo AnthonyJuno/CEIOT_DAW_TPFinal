@@ -173,8 +173,8 @@ Corroborar que el dispositivo se lista al final, y que el mensaje fue exitoso<br
 ![Implementacion](doc/AddDevice4.png)<br> 
 
 ### Frontend
-
-Completá todos los detalles sobre cómo armaste el frontend, sus interacciones, etc.
+El siguiente diagrama muestra el esquema de funcionamiento del frontend de la aplicación, con sus respectivas llamadas al backend.
+![Frontend](doc/FrontEnd.png)<br>
 
 ### Backend
 Esquema de APIs usadas por el Backend: <br>
