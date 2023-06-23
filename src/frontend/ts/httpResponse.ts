@@ -1,4 +1,4 @@
-interface ResponseLister{
+interface HttpResponse{
 
     handlerResponse(status: number, response: string);
     handlerResponseUpdateDevice(status:number,response:string);

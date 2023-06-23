@@ -8,7 +8,16 @@ body {
 main {
     flex: 1 0 auto;
 }
-
+.collection.flex-wrap {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .collection-item {
+    flex-basis: calc(33.33% - 20px);
+  margin: 10px;
+    /* Ajusta los márgenes según sea necesario */
+  }
+  
 .violeta{
     background-color: blueviolet;
 }

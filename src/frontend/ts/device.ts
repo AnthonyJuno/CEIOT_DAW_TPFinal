@@ -1,8 +1,8 @@
 class Device{
   public id: number;
-  public name: string;
   public description: string;
-  public state: number;
+  public name: string;
+  public state: boolean;
   public type: number;
   public dimmable: boolean;
 

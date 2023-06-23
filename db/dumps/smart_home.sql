@@ -31,6 +31,11 @@ SET time_zone = "+00:00";
 --
 -- Table structure for table `Devices`
 --
+CREATE TABLE `usuarios` (
+  `ID` int(11) NOT NULL,
+  `Usuario` varchar(255) NOT NULL,
+  `Contraseña` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE `Devices` (
   `id` int(11) NOT NULL,
@@ -44,6 +49,8 @@ CREATE TABLE `Devices` (
 --
 -- Dumping data for table `Devices`
 --
+INSERT INTO `usuarios` (`ID`, `Usuario`, `Contraseña`) VALUES
+(1, 'jhona', '123456');
 
 INSERT INTO `Devices` (`id`, `name`, `description`, `state`, `type`, `dimmable`) VALUES
 (1, 'Lampara 1', 'Luz living', 1, 0, 1),
@@ -60,6 +67,9 @@ INSERT INTO `Devices` (`id`, `name`, `description`, `state`, `type`, `dimmable`)
 --
 -- Indexes for table `Devices`
 --
+ALTER TABLE `usuarios`
+  ADD PRIMARY KEY (`ID`);
+
 ALTER TABLE `Devices`
   ADD PRIMARY KEY (`id`);
 
@@ -70,6 +80,9 @@ ALTER TABLE `Devices`
 --
 -- AUTO_INCREMENT for table `Devices`
 --
+ALTER TABLE `usuarios`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+COMMIT;
 ALTER TABLE `Devices`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 COMMIT;
